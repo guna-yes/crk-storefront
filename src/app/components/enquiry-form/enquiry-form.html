@@ -1,0 +1,69 @@
+<div
+  class="modal-backdrop"
+  role="presentation"
+  tabindex="-1"
+  (click)="onBackdropClick($event)"
+  (keydown.escape)="onClose()"
+>
+  <div class="modal">
+    <div class="modal-head">
+      <h2>I'm Interested</h2>
+      <button type="button" class="icon-btn" (click)="onClose()" aria-label="Close">
+        <app-icon name="close" [size]="18" />
+      </button>
+    </div>
+
+    <div class="product-chip">
+      <span class="dot" [style.background]="product().color"></span>
+      <span>{{ product().name }}</span>
+    </div>
+
+    @if (submitted()) {
+      <div class="message-banner success">
+        <app-icon name="check-circle" [size]="18" />
+        Thanks! We'll reach out to you shortly.
+      </div>
+    }
+
+    @if (failed()) {
+      <div class="message-banner error">
+        Something went wrong. Please try again, or message us on WhatsApp instead.
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field" [class.invalid]="f.customerName.invalid && f.customerName.touched">
+        <label for="customerName">Your name *</label>
+        <input id="customerName" type="text" formControlName="customerName" placeholder="Ramesh" />
+        @if (f.customerName.invalid && f.customerName.touched) {
+          <span class="error">Please enter your name.</span>
+        }
+      </div>
+
+      <div class="field" [class.invalid]="f.phone.invalid && f.phone.touched">
+        <label for="phone">Phone number *</label>
+        <input id="phone" type="tel" formControlName="phone" placeholder="9876543210" />
+        @if (f.phone.invalid && f.phone.touched) {
+          <span class="error">Please enter your phone number.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="notes">Notes</label>
+        <textarea
+          id="notes"
+          rows="3"
+          formControlName="notes"
+          placeholder="Any preference on color, size, or delivery timing"
+        ></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Sending…' : 'Send Enquiry' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

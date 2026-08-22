@@ -1,0 +1,141 @@
+.contact-us {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 88px) clamp(16px, 4vw, 32px);
+}
+
+.contact-head {
+  margin-bottom: 32px;
+}
+
+.contact-head h2 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 3.4vw, 34px);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.contact-head p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.whatsapp-banner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.16), rgba(37, 211, 102, 0.04));
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 18px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.whatsapp-banner:hover {
+  border-color: rgba(37, 211, 102, 0.6);
+  transform: translateY(-2px);
+}
+
+.whatsapp-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #05230f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.whatsapp-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.whatsapp-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.whatsapp-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.whatsapp-cta {
+  flex-shrink: 0;
+  background: #25d366;
+  color: #05230f;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.contact-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+a.contact-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.card-detail {
+  margin: 0 0 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .whatsapp-banner {
+    flex-wrap: wrap;
+  }
+
+  .whatsapp-cta {
+    width: 100%;
+    text-align: center;
+  }
+}

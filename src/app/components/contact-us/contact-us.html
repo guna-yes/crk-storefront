@@ -1,0 +1,39 @@
+<section id="contact-us" class="contact-us">
+  <div class="contact-head" appReveal>
+    <h2>Let's Talk</h2>
+    <p>Questions about a piece, a custom order, or just want to say hello - reach us directly.</p>
+  </div>
+
+  <a class="whatsapp-banner" [href]="whatsappUrl" target="_blank" rel="noopener" appReveal>
+    <span class="whatsapp-icon">
+      <app-icon name="whatsapp" [size]="26" />
+    </span>
+    <span class="whatsapp-copy">
+      <span class="whatsapp-title">Chat with us on WhatsApp</span>
+      <span class="whatsapp-hint">{{ whatsappDisplay }} &middot; we usually reply within a few hours</span>
+    </span>
+    <span class="whatsapp-cta">Start chat</span>
+  </a>
+
+  <div class="contact-grid">
+    <a class="contact-card" [href]="instagramUrl" target="_blank" rel="noopener" appReveal>
+      <span class="card-icon">
+        <app-icon name="instagram" [size]="20" />
+      </span>
+      <p class="card-title">Follow our work</p>
+      <p class="card-detail">{{ instagramHandle }}</p>
+    </a>
+
+    @for (store of stores; track store.name) {
+      <div class="contact-card" appReveal>
+        <span class="card-icon">
+          <app-icon name="map-pin" [size]="20" />
+        </span>
+        <p class="card-title">{{ store.name }}</p>
+        @for (line of store.lines; track line) {
+          <p class="card-detail">{{ line }}</p>
+        }
+      </div>
+    }
+  </div>
+</section>

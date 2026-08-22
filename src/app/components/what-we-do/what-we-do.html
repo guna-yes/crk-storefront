@@ -1,0 +1,48 @@
+<section id="what-we-do" class="what-we-do">
+  <div class="wwd-intro" appReveal>
+    <p class="eyebrow">CRK <span class="eyebrow-divider">Homes | Furniture | Interiors</span></p>
+    <h1>What we do</h1>
+    <p class="subtext">
+      From solid-wood sofas, dining sets, and beds to complete bedroom and interior
+      fit-outs, CRK brings homes, furniture, and interiors together under one roof.
+      Every piece is built to order and finished by hand.
+    </p>
+  </div>
+
+  <div class="wwd-showcase">
+    <div class="wwd-stage-col">
+      <div class="wwd-stage">
+        <app-furniture-viewer
+          [category]="activeCategory().category"
+          [color]="activeCategory().color"
+        />
+        <div class="wwd-stage-label">
+          <span class="dot" [style.background]="activeCategory().color"></span>
+          <span>{{ activeCategory().label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wwd-list-col">
+      @for (item of categories; track item.key) {
+        <button
+          #categoryItem
+          type="button"
+          class="wwd-item"
+          [class.active]="activeKey() === item.key"
+          (click)="selectCategory(item)"
+        >
+          <span class="wwd-item-index">0{{ $index + 1 }}</span>
+          <h3>{{ item.label }}</h3>
+          <p>{{ item.description }}</p>
+          <span class="wwd-item-cta">
+            @if (item.isCustom) {
+              <app-icon name="whatsapp" [size]="15" />
+            }
+            {{ item.cta }}
+          </span>
+        </button>
+      }
+    </div>
+  </div>
+</section>

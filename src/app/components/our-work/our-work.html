@@ -1,0 +1,33 @@
+<section id="our-work" class="our-work">
+  <div class="our-work-head" appReveal>
+    <h2>Our Work</h2>
+    <p>A few pieces we're proud of, straight from the workshop and customer homes.</p>
+  </div>
+
+  <div class="work-grid">
+    @for (piece of pieces(); track piece.id) {
+      <div class="work-card" appReveal>
+        <div
+          class="work-thumb"
+          [style.background]="
+            photo(piece)
+              ? null
+              : 'radial-gradient(120% 120% at 30% 20%, ' + piece.color + '55, var(--surface) 70%)'
+          "
+        >
+          @if (photo(piece); as src) {
+            <img [src]="src" [alt]="piece.name" class="work-photo" />
+          } @else {
+            <span class="work-dot" [style.background]="piece.color"></span>
+          }
+        </div>
+        <div class="work-caption">
+          <p class="work-name">{{ piece.name }}</p>
+          <p class="work-meta">{{ piece.category }} &middot; {{ piece.wood }}</p>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty-state">More project photos coming soon.</p>
+    }
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<button type="button" class="product-card" appReveal (click)="open.emit(product().id)">
+  <span
+    class="thumb"
+    [style.background]="
+      photo
+        ? null
+        : 'radial-gradient(120% 120% at 30% 20%, ' + product().color + '55, var(--surface) 70%)'
+    "
+  >
+    @if (photo; as src) {
+      <img [src]="src" [alt]="product().name" class="thumb-photo" />
+    } @else {
+      <span class="thumb-dot" [style.background]="product().color"></span>
+    }
+    @if (product().featured) {
+      <span class="featured-tag">Featured</span>
+    }
+  </span>
+
+  <span class="card-body">
+    <span class="name">{{ product().name }}</span>
+    <span class="meta">
+      {{ product().category }}
+      @if (product().wood) {
+        &middot; {{ product().wood }}
+      }
+    </span>
+    <span class="card-price">{{ formatPrice(product().price) }}</span>
+  </span>
+</button>

@@ -1,0 +1,22 @@
+<app-site-nav />
+
+<main>
+  <app-what-we-do />
+  <app-catalog (openProduct)="viewProduct($event)" />
+  <app-our-work />
+  <app-contact-us />
+</main>
+
+<app-site-footer />
+
+@if (openProduct(); as product) {
+  <app-product-modal
+    [product]="product"
+    (closed)="closeProduct()"
+    (enquire)="startEnquiry($event)"
+  />
+}
+
+@if (enquiryProduct(); as product) {
+  <app-enquiry-form [product]="product" (closed)="closeEnquiry()" />
+}
