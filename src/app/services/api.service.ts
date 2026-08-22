@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Lead, NewLead } from '../models/lead.model';
 
-export const API_ORIGIN = 'http://127.0.0.1:4000';
+export const API_ORIGIN = 'https://crk-furnitures-api.onrender.com';
 const BASE_URL = `${API_ORIGIN}/api`;
 
 export function resolveImageUrl(imageUrl: string | null): string | null {
