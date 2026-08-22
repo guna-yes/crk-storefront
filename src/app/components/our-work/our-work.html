@@ -12,13 +12,15 @@
           [style.background]="
             photo(piece)
               ? null
-              : 'radial-gradient(120% 120% at 30% 20%, ' + piece.color + '55, var(--surface) 70%)'
+              : 'linear-gradient(150deg, ' + piece.color + 'e6, ' + piece.color + '99)'
           "
         >
           @if (photo(piece); as src) {
             <img [src]="src" [alt]="piece.name" class="work-photo" />
           } @else {
-            <span class="work-dot" [style.background]="piece.color"></span>
+            <span class="work-icon">
+              <app-icon [name]="categoryIcon(piece)" [size]="24" />
+            </span>
           }
         </div>
         <div class="work-caption">

@@ -3,11 +3,13 @@ import { CatalogStore } from '../../services/catalog-store.service';
 import { Product } from '../../models/product.model';
 import { resolveImageUrl } from '../../services/api.service';
 import { Reveal } from '../../directives/reveal.directive';
+import { Icon } from '../icon/icon';
+import { iconForCategory } from '../../shared/category-icon';
 
 @Component({
   selector: 'app-our-work',
   standalone: true,
-  imports: [Reveal],
+  imports: [Reveal, Icon],
   templateUrl: './our-work.html',
   styleUrl: './our-work.css',
 })
@@ -18,5 +20,9 @@ export class OurWork {
 
   photo(product: Product): string | null {
     return resolveImageUrl(product.imageUrl);
+  }
+
+  categoryIcon(product: Product) {
+    return iconForCategory(product.category);
   }
 }

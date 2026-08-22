@@ -11,7 +11,12 @@ export type IconName =
   | 'chevron-down'
   | 'truck'
   | 'stack'
-  | 'box';
+  | 'box'
+  | 'sofa'
+  | 'bed'
+  | 'dining'
+  | 'chair'
+  | 'wardrobe';
 
 @Component({
   selector: 'app-icon',
@@ -82,6 +87,34 @@ export type IconName =
           <path d="M3 8 L12 4 L21 8 L21 17 L12 21 L3 17 Z"></path>
           <path d="M3 8 L12 12 L21 8"></path>
           <line x1="12" y1="12" x2="12" y2="21"></line>
+        }
+        @case ('sofa') {
+          <rect x="4" y="11" width="16" height="6.5" rx="1"></rect>
+          <path d="M5.5 11 V8.5 A1.5 1.5 0 0 1 7 7 H17 A1.5 1.5 0 0 1 18.5 8.5 V11"></path>
+          <line x1="4.5" y1="17.5" x2="4.5" y2="19"></line>
+          <line x1="19.5" y1="17.5" x2="19.5" y2="19"></line>
+        }
+        @case ('bed') {
+          <rect x="3" y="6" width="3.2" height="12" rx="0.6"></rect>
+          <rect x="6.2" y="12" width="14.8" height="6" rx="1"></rect>
+          <path d="M8.5 12 V9.3 H12.5 V12"></path>
+        }
+        @case ('dining') {
+          <rect x="3" y="6" width="18" height="2.4" rx="0.6"></rect>
+          <line x1="5.2" y1="8.4" x2="5.2" y2="19"></line>
+          <line x1="18.8" y1="8.4" x2="18.8" y2="19"></line>
+        }
+        @case ('chair') {
+          <rect x="7" y="11" width="10" height="2.4" rx="0.6"></rect>
+          <path d="M8 11 V6.3 A1 1 0 0 1 9 5.3 H15 A1 1 0 0 1 16 6.3 V11"></path>
+          <line x1="8" y1="13.4" x2="8" y2="19"></line>
+          <line x1="16" y1="13.4" x2="16" y2="19"></line>
+        }
+        @case ('wardrobe') {
+          <rect x="5" y="3" width="14" height="18" rx="1"></rect>
+          <line x1="12" y1="3" x2="12" y2="21"></line>
+          <line x1="10" y1="11" x2="10" y2="13"></line>
+          <line x1="14" y1="11" x2="14" y2="13"></line>
         }
       }
     </svg>

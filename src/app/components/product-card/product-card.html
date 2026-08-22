@@ -4,13 +4,15 @@
     [style.background]="
       photo
         ? null
-        : 'radial-gradient(120% 120% at 30% 20%, ' + product().color + '55, var(--surface) 70%)'
+        : 'linear-gradient(150deg, ' + product().color + 'e6, ' + product().color + '99)'
     "
   >
     @if (photo; as src) {
       <img [src]="src" [alt]="product().name" class="thumb-photo" />
     } @else {
-      <span class="thumb-dot" [style.background]="product().color"></span>
+      <span class="thumb-icon">
+        <app-icon [name]="categoryIcon" [size]="26" />
+      </span>
     }
     @if (product().featured) {
       <span class="featured-tag">Featured</span>
@@ -18,7 +20,10 @@
   </span>
 
   <span class="card-body">
-    <span class="name">{{ product().name }}</span>
+    <span class="name-row">
+      <span class="swatch" [style.background]="product().color"></span>
+      <span class="name">{{ product().name }}</span>
+    </span>
     <span class="meta">
       {{ product().category }}
       @if (product().wood) {
