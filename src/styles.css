@@ -44,6 +44,10 @@ section[id] {
   scroll-margin-top: 68px;
 }
 
+body.menu-open-lock {
+  overflow: hidden;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -172,8 +176,8 @@ a {
 .field select,
 .field textarea {
   font-family: inherit;
-  font-size: 15px;
-  padding: 11px 14px;
+  font-size: 16px;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-strong);
   background: var(--bg-elevated);
@@ -253,6 +257,7 @@ a {
   width: 100%;
   max-width: 560px;
   max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
   overflow-y: auto;
 }
 
@@ -307,6 +312,11 @@ a {
 
   .modal-actions .btn {
     width: 100%;
+  }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
   }
 }
 

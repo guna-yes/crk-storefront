@@ -9,6 +9,9 @@ export type IconName =
   | 'map-pin'
   | 'check-circle'
   | 'chevron-down'
+  | 'chevron-left'
+  | 'chevron-right'
+  | 'menu'
   | 'truck'
   | 'stack'
   | 'box'
@@ -71,6 +74,17 @@ export type IconName =
         }
         @case ('chevron-down') {
           <path d="M6 9 L12 15 L18 9"></path>
+        }
+        @case ('chevron-left') {
+          <path d="M15 6 L9 12 L15 18"></path>
+        }
+        @case ('chevron-right') {
+          <path d="M9 6 L15 12 L9 18"></path>
+        }
+        @case ('menu') {
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
         }
         @case ('truck') {
           <rect x="2" y="7" width="12" height="9" rx="1"></rect>

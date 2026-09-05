@@ -7,5 +7,27 @@
       <a href="#our-work">Our Work</a>
       <a href="#contact-us">Contact Us</a>
     </div>
+    <button
+      type="button"
+      class="menu-toggle"
+      (click)="toggleMenu()"
+      aria-label="Open menu"
+      [attr.aria-expanded]="menuOpen()"
+    >
+      <app-icon name="menu" [size]="22" />
+    </button>
   </div>
 </nav>
+
+@if (menuOpen()) {
+  <div class="mobile-menu" role="dialog" aria-modal="true" (keydown.escape)="closeMenu()">
+    <button type="button" class="menu-close" (click)="closeMenu()" aria-label="Close menu">
+      <app-icon name="close" [size]="22" />
+    </button>
+
+    <a href="#what-we-do" (click)="closeMenu()">What We Do</a>
+    <a href="#catalogue" (click)="closeMenu()">Catalogue</a>
+    <a href="#our-work" (click)="closeMenu()">Our Work</a>
+    <a href="#contact-us" (click)="closeMenu()">Contact Us</a>
+  </div>
+}

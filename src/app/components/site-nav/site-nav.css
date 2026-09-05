@@ -41,12 +41,85 @@
   color: var(--text);
 }
 
-@media (max-width: 560px) {
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+  background: var(--surface);
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  animation: menu-fade-in 0.2s ease;
+}
+
+.mobile-menu a {
+  font-size: 28px;
+  font-weight: 650;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.mobile-menu a:active {
+  color: var(--accent);
+}
+
+.menu-close {
+  position: absolute;
+  top: 16px;
+  right: clamp(16px, 4vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.menu-close:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+@keyframes menu-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 720px) {
   .nav-links {
-    gap: 14px;
+    display: none;
   }
 
-  .nav-links a {
-    font-size: 12px;
+  .menu-toggle {
+    display: flex;
   }
 }

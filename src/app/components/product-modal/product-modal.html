@@ -11,7 +11,50 @@
     </button>
 
     <div class="viewer-pane">
-      <app-furniture-viewer [category]="product().category" [color]="product().color" />
+      <div class="viewer-track" #track (scroll)="onTrackScroll($event)">
+        @for (slide of slides(); track slide) {
+          <div class="viewer-slide">
+            @if (slide === 'photo') {
+              <img [src]="photoUrl()" [alt]="product().name" class="slide-photo" />
+            } @else {
+              <app-furniture-viewer [category]="product().category" [color]="product().color" />
+            }
+          </div>
+        }
+      </div>
+
+      @if (slides().length > 1) {
+        <button
+          type="button"
+          class="icon-btn nav-arrow prev"
+          (click)="goToSlide(activeSlide() - 1)"
+          [disabled]="activeSlide() === 0"
+          aria-label="Previous image"
+        >
+          <app-icon name="chevron-left" [size]="18" />
+        </button>
+        <button
+          type="button"
+          class="icon-btn nav-arrow next"
+          (click)="goToSlide(activeSlide() + 1)"
+          [disabled]="activeSlide() === slides().length - 1"
+          aria-label="Next image"
+        >
+          <app-icon name="chevron-right" [size]="18" />
+        </button>
+
+        <div class="slide-dots">
+          @for (slide of slides(); track slide; let i = $index) {
+            <button
+              type="button"
+              class="dot"
+              [class.active]="activeSlide() === i"
+              (click)="goToSlide(i)"
+              [attr.aria-label]="'Show ' + (slide === 'photo' ? 'photo' : '3D view')"
+            ></button>
+          }
+        </div>
+      }
     </div>
 
     <div class="info-pane">
