@@ -9,6 +9,19 @@ import {
 } from '@angular/core';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+
+// A single neutral "clay study" palette shared by every piece - the point of
+// the abstract/sculptural treatment is that form and soft light carry the
+// piece, not per-product color. The product's own color is only used as a
+// faint accent glow (see `accentLight`), never as the material itself.
+const SCULPT_BASE = new THREE.Color(0xcabaa2);
+const SCULPT_LIGHT = SCULPT_BASE.clone().lerp(new THREE.Color(0xffffff), 0.22);
+const SCULPT_PANEL = SCULPT_BASE.clone().lerp(new THREE.Color(0x2a251f), 0.32);
+const SCULPT_LEG = new THREE.Color(0x46403a);
+
+const BEVEL_SEGMENTS = 3;
+const BEVEL_RADIUS = 0.045;
 
 @Component({
   selector: 'app-furniture-viewer',
@@ -26,6 +39,7 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
   private renderer?: THREE.WebGLRenderer;
   private scene?: THREE.Scene;
   private camera?: THREE.PerspectiveCamera;
+  private accentLight?: THREE.PointLight;
   private readonly furnitureGroup = new THREE.Group();
   private frameId = 0;
   private resizeObserver?: ResizeObserver;
@@ -123,7 +137,13 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     const rim = new THREE.DirectionalLight(0xffe8c2, 1.0);
     rim.position.set(-3, 5, -6);
 
-    this.scene.add(hemi, key, fill, top, rim);
+    // Faint colored glow tied to the product/category color - a soft wash
+    // behind the piece rather than a tint on the piece itself, so identity
+    // comes through without breaking the neutral sculptural material.
+    this.accentLight = new THREE.PointLight(0x8b5a2b, 3.5, 9, 2);
+    this.accentLight.position.set(0, 0.6, -1.7);
+
+    this.scene.add(hemi, key, fill, top, rim, this.accentLight);
 
     const floor = new THREE.Mesh(
       new THREE.CircleGeometry(4.2, 48),
@@ -181,33 +201,45 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
 
   private buildFurniture(category: string, colorHex: string): void {
     this.clearGroup();
-    const color = new THREE.Color(colorHex || '#8b5a2b');
+    this.accentLight?.color.set(colorHex || '#8b5a2b');
     switch (category) {
       case 'Dining':
-        this.buildDining(color);
+        this.buildDining();
         break;
       case 'Bed':
-        this.buildBed(color);
+        this.buildBed();
         break;
       case 'Chair':
-        this.buildChair(color, 0, 0);
+        this.buildChair(0, 0);
         break;
       case 'Wardrobe':
-        this.buildWardrobe(color);
+        this.buildWardrobe();
         break;
       case 'Sofa':
       default:
-        this.buildSofa(color);
+        this.buildSofa();
         break;
     }
   }
 
-  private woodMaterial(color: THREE.Color): THREE.MeshStandardMaterial {
-    return new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0 });
+  private box(width: number, height: number, depth: number): THREE.BufferGeometry {
+    return new RoundedBoxGeometry(width, height, depth, BEVEL_SEGMENTS, BEVEL_RADIUS);
+  }
+
+  private woodMaterial(): THREE.MeshStandardMaterial {
+    return new THREE.MeshStandardMaterial({ color: SCULPT_BASE, roughness: 0.85, metalness: 0 });
+  }
+
+  private lightMaterial(): THREE.MeshStandardMaterial {
+    return new THREE.MeshStandardMaterial({ color: SCULPT_LIGHT, roughness: 0.85, metalness: 0 });
+  }
+
+  private panelMaterial(): THREE.MeshStandardMaterial {
+    return new THREE.MeshStandardMaterial({ color: SCULPT_PANEL, roughness: 0.75, metalness: 0 });
   }
 
   private legMaterial(): THREE.MeshStandardMaterial {
-    return new THREE.MeshStandardMaterial({ color: 0x0e0c0a, roughness: 0.4, metalness: 0.15 });
+    return new THREE.MeshStandardMaterial({ color: SCULPT_LEG, roughness: 0.6, metalness: 0.05 });
   }
 
   private addMesh(geometry: THREE.BufferGeometry, material: THREE.Material, x: number, y: number, z: number): THREE.Mesh {
@@ -219,18 +251,18 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     return mesh;
   }
 
-  private buildSofa(color: THREE.Color): void {
-    const body = this.woodMaterial(color);
+  private buildSofa(): void {
+    const body = this.woodMaterial();
     const legMat = this.legMaterial();
 
-    this.addMesh(new THREE.BoxGeometry(2.6, 0.5, 1.1), body, 0, 0.55, 0);
-    this.addMesh(new THREE.BoxGeometry(2.6, 0.75, 0.25), body, 0, 1.0, -0.44);
-    this.addMesh(new THREE.BoxGeometry(0.24, 0.65, 1.1), body, -1.32, 0.85, 0);
-    this.addMesh(new THREE.BoxGeometry(0.24, 0.65, 1.1), body, 1.32, 0.85, 0);
+    this.addMesh(this.box(2.6, 0.5, 1.1), body, 0, 0.55, 0);
+    this.addMesh(this.box(2.6, 0.75, 0.25), body, 0, 1.0, -0.44);
+    this.addMesh(this.box(0.24, 0.65, 1.1), body, -1.32, 0.85, 0);
+    this.addMesh(this.box(0.24, 0.65, 1.1), body, 1.32, 0.85, 0);
 
-    const cushionMat = this.woodMaterial(color.clone().lerp(new THREE.Color(0xffffff), 0.12));
+    const cushionMat = this.lightMaterial();
     [-0.85, 0, 0.85].forEach((x) => {
-      this.addMesh(new THREE.BoxGeometry(0.78, 0.24, 0.95), cushionMat, x, 0.92, 0.05);
+      this.addMesh(this.box(0.78, 0.24, 0.95), cushionMat, x, 0.92, 0.05);
     });
 
     [-1.15, 1.15].forEach((x) => {
@@ -240,20 +272,20 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     });
   }
 
-  private buildDiningChair(color: THREE.Color, x: number, z: number, rotationY: number): void {
-    const body = this.woodMaterial(color);
+  private buildDiningChair(x: number, z: number, rotationY: number): void {
+    const body = this.woodMaterial();
     const legMat = this.legMaterial();
     const group = new THREE.Group();
     group.position.set(x, 0, z);
     group.rotation.y = rotationY;
 
-    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.08, 0.5), body);
+    const seat = new THREE.Mesh(this.box(0.5, 0.08, 0.5), body);
     seat.position.set(0, 0.5, 0);
     seat.castShadow = true;
     seat.receiveShadow = true;
     group.add(seat);
 
-    const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.08), body);
+    const back = new THREE.Mesh(this.box(0.5, 0.55, 0.08), body);
     back.position.set(0, 0.8, -0.21);
     back.castShadow = true;
     group.add(back);
@@ -270,54 +302,54 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     this.furnitureGroup.add(group);
   }
 
-  private buildDining(color: THREE.Color): void {
-    const body = this.woodMaterial(color);
+  private buildDining(): void {
+    const body = this.woodMaterial();
     const legMat = this.legMaterial();
 
-    this.addMesh(new THREE.BoxGeometry(2.0, 0.1, 1.1), body, 0, 0.72, 0);
+    this.addMesh(this.box(2.0, 0.1, 1.1), body, 0, 0.72, 0);
     [-0.85, 0.85].forEach((x) => {
       [-0.45, 0.45].forEach((z) => {
         this.addMesh(new THREE.CylinderGeometry(0.05, 0.05, 0.72, 10), legMat, x, 0.36, z);
       });
     });
 
-    this.buildDiningChair(color, -1.15, 0, Math.PI / 2);
-    this.buildDiningChair(color, 1.15, 0, -Math.PI / 2);
-    this.buildDiningChair(color, -0.4, 0.85, Math.PI);
-    this.buildDiningChair(color, 0.4, 0.85, Math.PI);
-    this.buildDiningChair(color, -0.4, -0.85, 0);
-    this.buildDiningChair(color, 0.4, -0.85, 0);
+    this.buildDiningChair(-1.15, 0, Math.PI / 2);
+    this.buildDiningChair(1.15, 0, -Math.PI / 2);
+    this.buildDiningChair(-0.4, 0.85, Math.PI);
+    this.buildDiningChair(0.4, 0.85, Math.PI);
+    this.buildDiningChair(-0.4, -0.85, 0);
+    this.buildDiningChair(0.4, -0.85, 0);
   }
 
-  private buildBed(color: THREE.Color): void {
-    const body = this.woodMaterial(color);
+  private buildBed(): void {
+    const body = this.woodMaterial();
     const legMat = this.legMaterial();
-    const mattressMat = this.woodMaterial(new THREE.Color(0xefe8d8));
-    const pillowMat = this.woodMaterial(new THREE.Color(0xfaf6ec));
+    const mattressMat = this.lightMaterial();
+    const pillowMat = this.lightMaterial();
 
-    this.addMesh(new THREE.BoxGeometry(2.4, 0.28, 3.2), body, 0, 0.34, 0);
-    this.addMesh(new THREE.BoxGeometry(2.3, 0.28, 3.0), mattressMat, 0, 0.62, 0);
-    this.addMesh(new THREE.BoxGeometry(2.4, 1.0, 0.16), body, 0, 0.98, -1.52);
+    this.addMesh(this.box(2.4, 0.28, 3.2), body, 0, 0.34, 0);
+    this.addMesh(this.box(2.3, 0.28, 3.0), mattressMat, 0, 0.62, 0);
+    this.addMesh(this.box(2.4, 1.0, 0.16), body, 0, 0.98, -1.52);
 
     [-0.75, 0.75].forEach((x) => {
-      this.addMesh(new THREE.BoxGeometry(0.55, 0.14, 0.38), pillowMat, x, 0.83, -1.15);
+      this.addMesh(this.box(0.55, 0.14, 0.38), pillowMat, x, 0.83, -1.15);
     });
 
     [-1.1, 1.1].forEach((x) => {
       [-1.45, 1.45].forEach((z) => {
-        this.addMesh(new THREE.BoxGeometry(0.14, 0.34, 0.14), legMat, x, 0.17, z);
+        this.addMesh(this.box(0.14, 0.34, 0.14), legMat, x, 0.17, z);
       });
     });
   }
 
-  private buildChair(color: THREE.Color, x: number, z: number): void {
-    const body = this.woodMaterial(color);
+  private buildChair(x: number, z: number): void {
+    const body = this.woodMaterial();
     const legMat = this.legMaterial();
 
-    this.addMesh(new THREE.BoxGeometry(0.9, 0.15, 0.9), body, x, 0.55, z);
-    this.addMesh(new THREE.BoxGeometry(0.9, 0.9, 0.12), body, x, 1.02, z - 0.4);
-    this.addMesh(new THREE.BoxGeometry(0.16, 0.6, 0.16), body, x - 0.4, 0.85, z - 0.36);
-    this.addMesh(new THREE.BoxGeometry(0.16, 0.6, 0.16), body, x + 0.4, 0.85, z - 0.36);
+    this.addMesh(this.box(0.9, 0.15, 0.9), body, x, 0.55, z);
+    this.addMesh(this.box(0.9, 0.9, 0.12), body, x, 1.02, z - 0.4);
+    this.addMesh(this.box(0.16, 0.6, 0.16), body, x - 0.4, 0.85, z - 0.36);
+    this.addMesh(this.box(0.16, 0.6, 0.16), body, x + 0.4, 0.85, z - 0.36);
 
     [-0.36, 0.36].forEach((lx) => {
       [-0.36, 0.36].forEach((lz) => {
@@ -326,15 +358,15 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     });
   }
 
-  private buildWardrobe(color: THREE.Color): void {
-    const body = this.woodMaterial(color);
-    const doorMat = this.woodMaterial(color.clone().lerp(new THREE.Color(0x000000), 0.12));
+  private buildWardrobe(): void {
+    const body = this.woodMaterial();
+    const doorMat = this.panelMaterial();
     const legMat = this.legMaterial();
 
-    this.addMesh(new THREE.BoxGeometry(1.9, 2.2, 0.75), body, 0, 1.14, 0);
+    this.addMesh(this.box(1.9, 2.2, 0.75), body, 0, 1.14, 0);
 
     [-0.63, 0, 0.63].forEach((x) => {
-      this.addMesh(new THREE.BoxGeometry(0.58, 2.0, 0.06), doorMat, x, 1.14, 0.4);
+      this.addMesh(this.box(0.58, 2.0, 0.06), doorMat, x, 1.14, 0.4);
     });
 
     [-0.63, 0, 0.63].forEach((x) => {
@@ -343,7 +375,7 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
 
     [-0.9, 0.9].forEach((x) => {
       [-0.32, 0.32].forEach((z) => {
-        this.addMesh(new THREE.BoxGeometry(0.12, 0.14, 0.12), legMat, x, 0.07, z);
+        this.addMesh(this.box(0.12, 0.14, 0.12), legMat, x, 0.07, z);
       });
     });
   }
