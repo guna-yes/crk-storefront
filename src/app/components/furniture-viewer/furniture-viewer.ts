@@ -8,6 +8,7 @@ import {
   input,
 } from '@angular/core';
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 @Component({
   selector: 'app-furniture-viewer',
@@ -62,7 +63,6 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x18171b);
-    this.scene.fog = new THREE.Fog(0x18171b, 8, 16);
 
     const width = host.clientWidth || 1;
     const height = host.clientHeight || 1;
@@ -80,27 +80,54 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.15;
     host.appendChild(this.renderer.domElement);
 
-    const ambient = new THREE.AmbientLight(0x4a4238, 1.6);
-    const key = new THREE.SpotLight(0xfff1d6, 4.2, 24, Math.PI / 3.4, 0.5, 1);
-    key.position.set(4, 6.5, 4);
+    // Neutral studio environment so PBR materials have something soft to
+    // reflect, instead of going flat/dead wherever they pick up specular.
+    const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+    const studio = new RoomEnvironment();
+    this.scene.environment = pmremGenerator.fromScene(studio, 0.04).texture;
+    pmremGenerator.dispose();
+    studio.dispose();
+
+    // Soft neutral fill so shadowed surfaces never go fully dead.
+    const hemi = new THREE.HemisphereLight(0xfff6ea, 0x1c1a22, 0.85);
+
+    // Broad key light, front-upper-left - stands in for a large softbox.
+    const key = new THREE.DirectionalLight(0xfff8f0, 2.2);
+    key.position.set(4.5, 6.5, 5);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
     key.shadow.camera.near = 1;
     key.shadow.camera.far = 20;
-    const rim = new THREE.DirectionalLight(0xe8c07d, 0.9);
-    rim.position.set(-5, 3, -4);
-    const fill = new THREE.DirectionalLight(0x8896b3, 0.55);
-    fill.position.set(-3, 2, 4);
-    const front = new THREE.DirectionalLight(0xfff6e8, 0.5);
-    front.position.set(0, 3, 6);
-    this.scene.add(ambient, key, rim, fill, front);
+    key.shadow.camera.left = -6;
+    key.shadow.camera.right = 6;
+    key.shadow.camera.top = 6;
+    key.shadow.camera.bottom = -6;
+    key.shadow.radius = 4;
+    key.shadow.bias = -0.0005;
+
+    // Fill opposite the key, no shadow - lifts the dark side back up.
+    const fill = new THREE.DirectionalLight(0xf3f6ff, 1.1);
+    fill.position.set(-5, 4, 3);
+
+    // Soft overhead top light so upward-facing surfaces don't go dark.
+    const top = new THREE.DirectionalLight(0xffffff, 0.7);
+    top.position.set(0, 8, 0);
+
+    // Subtle warm rim from behind, separating the piece from the dark stage.
+    const rim = new THREE.DirectionalLight(0xffe8c2, 1.0);
+    rim.position.set(-3, 5, -6);
+
+    this.scene.add(hemi, key, fill, top, rim);
 
     const floor = new THREE.Mesh(
       new THREE.CircleGeometry(4.2, 48),
-      new THREE.MeshStandardMaterial({ color: 0x232025, roughness: 0.9, metalness: 0.1 }),
+      new THREE.MeshStandardMaterial({ color: 0x232025, roughness: 0.9, metalness: 0 }),
     );
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
@@ -176,11 +203,11 @@ export class FurnitureViewer implements AfterViewInit, OnDestroy {
   }
 
   private woodMaterial(color: THREE.Color): THREE.MeshStandardMaterial {
-    return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0.12 });
+    return new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0 });
   }
 
   private legMaterial(): THREE.MeshStandardMaterial {
-    return new THREE.MeshStandardMaterial({ color: 0x0e0c0a, roughness: 0.4, metalness: 0.2 });
+    return new THREE.MeshStandardMaterial({ color: 0x0e0c0a, roughness: 0.4, metalness: 0.15 });
   }
 
   private addMesh(geometry: THREE.BufferGeometry, material: THREE.Material, x: number, y: number, z: number): THREE.Mesh {
