@@ -225,7 +225,7 @@
 .arrows {
   position: absolute;
   right: clamp(14px, 3vw, 32px);
-  bottom: 26px;
+  bottom: 96px;
   display: flex;
   gap: 8px;
 }
@@ -318,7 +318,7 @@
   }
 
   .arrows {
-    bottom: 22px;
+    display: none;
   }
 
   .counter {
