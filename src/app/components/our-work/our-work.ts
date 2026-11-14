@@ -1,28 +1,23 @@
-import { Component, computed, inject } from '@angular/core';
-import { CatalogStore } from '../../services/catalog-store.service';
-import { Product } from '../../models/product.model';
+import { Component, inject } from '@angular/core';
+import { GalleryStore } from '../../services/gallery-store.service';
+import { GalleryItem } from '../../models/gallery.model';
 import { resolveImageUrl } from '../../services/api.service';
 import { Reveal } from '../../directives/reveal.directive';
-import { Icon } from '../icon/icon';
-import { iconForCategory } from '../../shared/category-icon';
 
 @Component({
   selector: 'app-our-work',
   standalone: true,
-  imports: [Reveal, Icon],
+  imports: [Reveal],
   templateUrl: './our-work.html',
   styleUrl: './our-work.css',
 })
 export class OurWork {
-  private readonly store = inject(CatalogStore);
+  private readonly gallery = inject(GalleryStore);
 
-  readonly pieces = computed(() => this.store.products().filter((product) => product.featured));
+  readonly items = this.gallery.items;
+  readonly loaded = this.gallery.loaded;
 
-  photo(product: Product): string | null {
-    return resolveImageUrl(product.imageUrl);
-  }
-
-  categoryIcon(product: Product) {
-    return iconForCategory(product.category);
+  photo(item: GalleryItem): string | null {
+    return resolveImageUrl(item.imageUrl);
   }
 }

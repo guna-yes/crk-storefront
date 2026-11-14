@@ -1,0 +1,20 @@
+<section class="about">
+  <div class="about-inner">
+    <h2 appReveal>Who we are</h2>
+    <p class="lead" appReveal>
+      CRK Furnitures is a local furniture workshop. We build sofas, dining tables, beds and
+      wardrobes in solid wood, and make custom pieces to your exact requirement.
+    </p>
+    <div class="points">
+      @for (point of points; track point.title) {
+        <div class="point" appReveal>
+          <h3>{{ point.title }}</h3>
+          <p>{{ point.text }}</p>
+        </div>
+      }
+    </div>
+    <a class="btn btn-primary" [href]="whatsappUrl" target="_blank" rel="noopener" appReveal>
+      Talk to us on WhatsApp
+    </a>
+  </div>
+</section>

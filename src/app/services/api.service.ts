@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Lead, NewLead } from '../models/lead.model';
+import { GalleryItem } from '../models/gallery.model';
 
 export const API_ORIGIN = 'https://crk-furnitures-api.onrender.com';
 const BASE_URL = `${API_ORIGIN}/api`;
@@ -18,6 +19,10 @@ export class ApiService {
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(`${BASE_URL}/products`);
+  }
+
+  getGallery(): Observable<GalleryItem[]> {
+    return this.http.get<GalleryItem[]>(`${BASE_URL}/gallery`);
   }
 
   createLead(lead: NewLead): Observable<Lead> {

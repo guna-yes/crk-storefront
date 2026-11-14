@@ -1,0 +1,29 @@
+<section id="what-we-do" class="story" #track>
+  <div class="stage">
+    <div class="intro" [style]="introStyle()">
+      <p class="eyebrow">CRK Furnitures</p>
+      <h1>Furniture,<br />made by hand.</h1>
+      <p class="sub">Sofas, dining tables, beds and made-to-order pieces, built in solid wood by local craftsmen.</p>
+      <span class="hint">Scroll</span>
+    </div>
+
+    <div class="frame" [style]="frameStyle()">
+      @for (chapter of chapters; track chapter.title; let i = $index) {
+        <div class="layer" [style]="layerStyle(i)">
+          <div class="media">
+            @if (photos()[i]; as src) {
+              <img [src]="src" [alt]="chapter.title" />
+            } @else {
+              <div class="placeholder"></div>
+            }
+          </div>
+          <div class="shade"></div>
+          <div class="copy" [style]="textStyle(i)">
+            <h2>{{ chapter.title }}</h2>
+            <p>{{ chapter.line }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

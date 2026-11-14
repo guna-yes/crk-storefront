@@ -1,0 +1,48 @@
+.about {
+  padding: clamp(64px, 10vw, 120px) clamp(16px, 4vw, 32px);
+}
+
+.about-inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-size: clamp(32px, 6vw, 56px);
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.lead {
+  margin: 0 0 40px;
+  max-width: 720px;
+  font-size: clamp(18px, 2.6vw, 24px);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px;
+  margin-bottom: 44px;
+}
+
+.point {
+  border-top: 2px solid var(--accent);
+  padding-top: 16px;
+}
+
+.point h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  color: var(--text);
+}
+
+.point p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
