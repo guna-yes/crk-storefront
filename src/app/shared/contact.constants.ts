@@ -11,12 +11,19 @@ export function whatsappLink(message?: string): string {
 export interface StoreLocation {
   name: string;
   lines: string[];
+  mapUrl?: string;
 }
 
 export const STORE_LOCATIONS: StoreLocation[] = [
   {
     name: 'Anantapur Store',
-    lines: ['Shop No: 25/643-24-16, 17', 'Penukonda Road, Anantapur', 'Andhra Pradesh - 515001'],
+    lines: [
+      '37-33-1, Bellary - Uravakonda - Anantapur Rd',
+      'Near Mayuri Tiles, Industrial Estate, Pilligundla',
+      'Anantapur, Narayanapuram',
+      'Andhra Pradesh - 515004',
+    ],
+    mapUrl: 'https://maps.app.goo.gl/fAZuL7A9Mgic1UHU8',
   },
   {
     name: 'Dharmavaram Store',

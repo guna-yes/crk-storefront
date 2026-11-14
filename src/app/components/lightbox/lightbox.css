@@ -104,3 +104,15 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+.video-stage {
+  cursor: default;
+  touch-action: auto;
+}
+
+.video-stage video {
+  max-width: 94vw;
+  max-height: 80svh;
+  border-radius: 6px;
+  background: #000;
+}

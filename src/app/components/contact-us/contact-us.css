@@ -139,3 +139,16 @@ a.contact-card:hover {
     text-align: center;
   }
 }
+
+.map-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--accent-strong);
+  text-decoration: none;
+}
+
+.map-link:hover {
+  text-decoration: underline;
+}

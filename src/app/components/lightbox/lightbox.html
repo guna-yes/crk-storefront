@@ -6,22 +6,28 @@
     </button>
   </div>
 
-  <div
-    class="stage"
-    (wheel)="onWheel($event)"
-    (pointerdown)="onPointerDown($event)"
-    (pointermove)="onPointerMove($event)"
-    (pointerup)="onPointerUp($event)"
-    (pointercancel)="onPointerUp($event)"
-  >
-    <img
-      [src]="current().src"
-      [alt]="current().alt"
-      [style.transform]="transform()"
-      [class.dragging]="dragging()"
-      draggable="false"
-    />
-  </div>
+  @if (isVideo()) {
+    <div class="stage video-stage">
+      <video [src]="current().src" controls autoplay playsinline></video>
+    </div>
+  } @else {
+    <div
+      class="stage"
+      (wheel)="onWheel($event)"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp($event)"
+      (pointercancel)="onPointerUp($event)"
+    >
+      <img
+        [src]="current().src"
+        [alt]="current().alt"
+        [style.transform]="transform()"
+        [class.dragging]="dragging()"
+        draggable="false"
+      />
+    </div>
+  }
 
   @if (images().length > 1) {
     <button type="button" class="nav prev" (click)="go(-1)" aria-label="Previous photo">
@@ -32,6 +38,7 @@
     </button>
   }
 
+  @if (!isVideo()) {
   <div class="bar">
     <button type="button" class="ctl" (click)="zoom(1 / 1.4)" aria-label="Zoom out">−</button>
     <button type="button" class="ctl" (click)="zoom(1.4)" aria-label="Zoom in">+</button>
@@ -39,4 +46,5 @@
     <button type="button" class="ctl wide" (click)="rotate(90)" aria-label="Rotate right">Rotate ⟳</button>
     <button type="button" class="ctl wide" (click)="reset()">Reset</button>
   </div>
+  }
 </div>

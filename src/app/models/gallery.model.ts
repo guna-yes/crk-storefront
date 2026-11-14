@@ -6,5 +6,7 @@ export interface GalleryItem {
   caption: string;
   order: number;
   section: GallerySection;
+  mediaType: 'image' | 'video';
   imageUrl: string;
+  videoUrl: string | null;
 }

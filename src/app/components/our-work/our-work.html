@@ -2,7 +2,7 @@
   <div class="head" appReveal>
     <div>
       <h2>Our work</h2>
-      <p>Tap any photo to open it, zoom in and turn it around.</p>
+      <p>Tap any photo or video to open it. Zoom in and turn photos around.</p>
     </div>
     @if (items().length > 1) {
       <div class="arrows">
@@ -26,7 +26,12 @@
   >
     @for (item of items(); track item.id; let i = $index) {
       <button type="button" class="shot" (click)="open(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
-        <img [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
+        @if (item.mediaType === 'video') {
+          <video [src]="media(item) + '#t=0.1'" preload="metadata" muted playsinline></video>
+          <span class="play" aria-hidden="true">&#9654;</span>
+        } @else {
+          <img [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
+        }
       </button>
     } @empty {
       <p class="empty">{{ loaded() ? 'Photos coming soon.' : 'Loading…' }}</p>

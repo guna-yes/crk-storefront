@@ -13,7 +13,7 @@ const clampScale = (n: number) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, n));
   styleUrl: './lightbox.css',
 })
 export class Lightbox implements OnInit, OnDestroy {
-  images = input.required<{ src: string; alt: string }[]>();
+  images = input.required<{ src: string; alt: string; type?: string }[]>();
   start = input<number>(0);
   closed = output<void>();
 
@@ -38,7 +38,11 @@ export class Lightbox implements OnInit, OnDestroy {
     document.body.classList.remove('menu-open-lock');
   }
 
-  current(): { src: string; alt: string } {
+  isVideo(): boolean {
+    return this.current().type === 'video';
+  }
+
+  current(): { src: string; alt: string; type?: string } {
     return this.images()[this.index()];
   }
 

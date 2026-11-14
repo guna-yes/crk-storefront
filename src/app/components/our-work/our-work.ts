@@ -27,8 +27,9 @@ export class OurWork implements OnInit, OnDestroy {
 
   readonly images = computed(() =>
     this.items().map((item) => ({
-      src: resolveImageUrl(item.imageUrl) ?? '',
+      src: this.media(item) ?? '',
       alt: item.title || 'Our work',
+      type: item.mediaType,
     })),
   );
 
@@ -45,6 +46,10 @@ export class OurWork implements OnInit, OnDestroy {
 
   photo(item: GalleryItem): string | null {
     return resolveImageUrl(item.imageUrl);
+  }
+
+  media(item: GalleryItem): string | null {
+    return resolveImageUrl(item.mediaType === 'video' ? item.videoUrl : item.imageUrl);
   }
 
   open(index: number): void {

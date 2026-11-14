@@ -33,6 +33,9 @@
         @for (line of store.lines; track line) {
           <p class="card-detail">{{ line }}</p>
         }
+        @if (store.mapUrl) {
+          <a class="map-link" [href]="store.mapUrl" target="_blank" rel="noopener">Open in Google Maps &rarr;</a>
+        }
       </div>
     }
   </div>
