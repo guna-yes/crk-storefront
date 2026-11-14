@@ -32,8 +32,10 @@ export class Story implements OnInit {
   readonly progress = signal(0);
   private ticking = false;
 
+  private readonly storyItems = this.gallery.section('story');
+
   readonly photos = computed(() =>
-    this.gallery.items().map((item) => resolveImageUrl(item.imageUrl)),
+    this.storyItems().map((item) => resolveImageUrl(item.imageUrl)),
   );
 
   ngOnInit(): void {

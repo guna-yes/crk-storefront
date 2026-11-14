@@ -19,7 +19,7 @@ export class OurWork implements OnInit, OnDestroy {
 
   @ViewChild('track', { static: true }) track!: ElementRef<HTMLElement>;
 
-  readonly items = this.gallery.items;
+  readonly items = this.gallery.section('work');
   readonly loaded = this.gallery.loaded;
   readonly paused = signal(false);
 

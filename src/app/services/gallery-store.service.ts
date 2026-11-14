@@ -1,6 +1,6 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { GalleryItem } from '../models/gallery.model';
+import { GalleryItem, GallerySection } from '../models/gallery.model';
 
 @Injectable({ providedIn: 'root' })
 export class GalleryStore {
@@ -8,6 +8,10 @@ export class GalleryStore {
 
   readonly items = signal<GalleryItem[]>([]);
   readonly loaded = signal(false);
+
+  section(section: GallerySection) {
+    return computed(() => this.items().filter((i) => i.section === section));
+  }
 
   constructor() {
     this.api.getGallery().subscribe({

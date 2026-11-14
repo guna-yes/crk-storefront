@@ -1,6 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { GalleryStore } from '../../services/gallery-store.service';
+import { resolveImageUrl } from '../../services/api.service';
 import { Reveal } from '../../directives/reveal.directive';
 import { whatsappLink } from '../../shared/contact.constants';
+
+const FALLBACK_PHOTOS = [
+  { src: 'about/workshop.jpg', alt: 'A craftsman planing wood in the workshop' },
+  { src: 'about/craftsman.jpg', alt: 'Marking and shaping a wooden board' },
+  { src: 'about/cutting.jpg', alt: 'Cutting timber to size' },
+];
 
 @Component({
   selector: 'app-about',
@@ -10,6 +18,19 @@ import { whatsappLink } from '../../shared/contact.constants';
   styleUrl: './about.css',
 })
 export class About {
+  private readonly aboutItems = inject(GalleryStore).section('about');
+
+  /** Admin-managed photos when present, otherwise the built-in sample photos. */
+  readonly photos = computed(() => {
+    const own = this.aboutItems()
+      .slice(0, 3)
+      .map((i) => ({
+        src: resolveImageUrl(i.imageUrl) ?? '',
+        alt: i.title || 'CRK Furnitures workshop',
+      }));
+    return own.length ? own : FALLBACK_PHOTOS;
+  });
+
   readonly whatsappUrl = whatsappLink('Hi! I would like to know more about CRK Furnitures.');
   readonly points = [
     { title: 'Solid wood', text: 'Teak, sheesham and mango wood - real timber, not particle board.' },

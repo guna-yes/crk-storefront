@@ -6,9 +6,9 @@
       wardrobes in solid wood, and make custom pieces to your exact requirement.
     </p>
     <div class="photos" appReveal>
-      <img class="big" src="about/workshop.jpg" alt="A craftsman planing wood in the workshop" loading="lazy" />
-      <img src="about/craftsman.jpg" alt="Marking and shaping a wooden board" loading="lazy" />
-      <img src="about/cutting.jpg" alt="Cutting timber to size" loading="lazy" />
+      @for (photo of photos(); track photo.src; let i = $index) {
+        <img [class.big]="i === 0" [src]="photo.src" [alt]="photo.alt" loading="lazy" />
+      }
     </div>
     <div class="points">
       @for (point of points; track point.title) {
