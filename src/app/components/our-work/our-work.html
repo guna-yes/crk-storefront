@@ -4,21 +4,16 @@
     <p>A few pieces from our workshop and customers' homes.</p>
   </div>
 
-  <div class="grid">
+  <div
+    class="track"
+    #track
+    (pointerdown)="userActive()"
+    (pointerenter)="userActive()"
+    (wheel)="userActive()"
+    (touchmove)="userActive()"
+  >
     @for (item of items(); track item.id) {
-      <figure class="card" appReveal>
-        <img [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
-        @if (item.title || item.caption) {
-          <figcaption>
-            @if (item.title) {
-              <strong>{{ item.title }}</strong>
-            }
-            @if (item.caption) {
-              <span>{{ item.caption }}</span>
-            }
-          </figcaption>
-        }
-      </figure>
+      <img class="shot" [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
     } @empty {
       <p class="empty">{{ loaded() ? 'Photos coming soon.' : 'Loading…' }}</p>
     }

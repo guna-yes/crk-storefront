@@ -1,11 +1,11 @@
 .our-work {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: clamp(56px, 9vw, 110px) clamp(16px, 4vw, 32px);
+  padding: clamp(56px, 9vw, 110px) 0;
 }
 
 .head {
-  margin-bottom: 32px;
+  max-width: 1180px;
+  margin: 0 auto 28px;
+  padding: 0 clamp(16px, 4vw, 32px);
 }
 
 .head h2 {
@@ -21,47 +21,33 @@
   color: var(--text-muted);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
-}
-
-.card {
-  margin: 0;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-}
-
-.card img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
-figcaption {
+.track {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 14px 16px 16px;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px clamp(16px, 4vw, 32px) 16px;
+  scroll-padding: 0 clamp(16px, 4vw, 32px);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
-figcaption strong {
-  font-size: 15px;
-  color: var(--text);
+.track::-webkit-scrollbar {
+  display: none;
 }
 
-figcaption span {
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--text-muted);
+.shot {
+  flex: 0 0 min(78vw, 460px);
+  height: min(62vw, 360px);
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  scroll-snap-align: start;
+  background: var(--surface-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .empty {
-  grid-column: 1 / -1;
+  width: 100%;
   text-align: center;
   color: var(--text-muted);
   padding: 40px 0;
