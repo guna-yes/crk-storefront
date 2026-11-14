@@ -1,7 +1,19 @@
 <section id="our-work" class="our-work">
   <div class="head" appReveal>
-    <h2>Our work</h2>
-    <p>A few pieces from our workshop and customers' homes.</p>
+    <div>
+      <h2>Our work</h2>
+      <p>Tap any photo to open it, zoom in and turn it around.</p>
+    </div>
+    @if (items().length > 1) {
+      <div class="arrows">
+        <button type="button" (click)="scrollBy(-1)" aria-label="Scroll left">
+          <app-icon name="chevron-left" [size]="20" />
+        </button>
+        <button type="button" (click)="scrollBy(1)" aria-label="Scroll right">
+          <app-icon name="chevron-right" [size]="20" />
+        </button>
+      </div>
+    }
   </div>
 
   <div
@@ -12,10 +24,16 @@
     (wheel)="userActive()"
     (touchmove)="userActive()"
   >
-    @for (item of items(); track item.id) {
-      <img class="shot" [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
+    @for (item of items(); track item.id; let i = $index) {
+      <button type="button" class="shot" (click)="open(i)" [attr.aria-label]="'Open photo ' + (i + 1)">
+        <img [src]="photo(item)" [alt]="item.title || 'Our work'" loading="lazy" />
+      </button>
     } @empty {
       <p class="empty">{{ loaded() ? 'Photos coming soon.' : 'Loading…' }}</p>
     }
   </div>
 </section>
+
+@if (viewing() !== null) {
+  <app-lightbox [images]="images()" [start]="viewing()!" (closed)="viewing.set(null)" />
+}

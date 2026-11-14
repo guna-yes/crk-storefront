@@ -1,0 +1,42 @@
+<div class="overlay" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="top">
+    <span class="count">{{ index() + 1 }} / {{ images().length }}</span>
+    <button type="button" class="ctl" (click)="close()" aria-label="Close">
+      <app-icon name="close" [size]="22" />
+    </button>
+  </div>
+
+  <div
+    class="stage"
+    (wheel)="onWheel($event)"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+  >
+    <img
+      [src]="current().src"
+      [alt]="current().alt"
+      [style.transform]="transform()"
+      [class.dragging]="dragging()"
+      draggable="false"
+    />
+  </div>
+
+  @if (images().length > 1) {
+    <button type="button" class="nav prev" (click)="go(-1)" aria-label="Previous photo">
+      <app-icon name="chevron-left" [size]="26" />
+    </button>
+    <button type="button" class="nav next" (click)="go(1)" aria-label="Next photo">
+      <app-icon name="chevron-right" [size]="26" />
+    </button>
+  }
+
+  <div class="bar">
+    <button type="button" class="ctl" (click)="zoom(1 / 1.4)" aria-label="Zoom out">−</button>
+    <button type="button" class="ctl" (click)="zoom(1.4)" aria-label="Zoom in">+</button>
+    <button type="button" class="ctl wide" (click)="rotate(-90)" aria-label="Rotate left">⟲ Rotate</button>
+    <button type="button" class="ctl wide" (click)="rotate(90)" aria-label="Rotate right">Rotate ⟳</button>
+    <button type="button" class="ctl wide" (click)="reset()">Reset</button>
+  </div>
+</div>
