@@ -1,6 +1,6 @@
 .story {
   position: relative;
-  height: 640svh;
+  height: 760svh;
 }
 
 .stage {
@@ -128,7 +128,7 @@
 
 @media (max-width: 720px) {
   .story {
-    height: 540svh;
+    height: 640svh;
   }
 
 }
@@ -328,4 +328,41 @@
   .copy {
     bottom: 96px;
   }
+}
+
+.curtains {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  will-change: transform;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.18), transparent 14%),
+    repeating-linear-gradient(
+      90deg,
+      #cdb994 0px,
+      #e2d2b2 26px,
+      #bfa97f 52px,
+      #d6c4a1 78px
+    );
+  border-top: 10px solid #b8913f;
+  box-shadow: 0 0 40px rgba(40, 25, 10, 0.4);
+}
+
+.panel.left {
+  left: 0;
+  border-right: 2px solid rgba(90, 65, 30, 0.35);
+}
+
+.panel.right {
+  right: 0;
+  border-left: 2px solid rgba(90, 65, 30, 0.35);
 }

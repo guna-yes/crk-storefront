@@ -13,12 +13,14 @@ const CHAPTERS: Chapter[] = [
   { title: 'Dining tables', line: 'Made for family meals, in the wood and finish you choose.' },
   { title: 'Beds', line: 'Sturdy frames and headboards, built to last for years.' },
   { title: 'Made to order', line: 'Wardrobes, interiors, or your own design - built to your size.' },
+  { title: 'Curtains', line: 'Made-to-measure curtains and blinds to finish your room.' },
 ];
 
 /** Scroll progress (0..1) at which each phase of the story starts/ends. */
 const INTRO_END = 0.12; // intro text gone, card is in
 const EXPAND_END = 0.24; // card has grown to full screen
-const COLLAPSE_START = 0.92; // full screen starts shrinking back to a card
+const CURTAIN_START = 0.86; // curtains begin to close
+const CURTAIN_END = 0.97; // curtains fully closed
 
 const clamp = (n: number) => Math.min(1, Math.max(0, n));
 const ease = (t: number) => t * t * (3 - 2 * t);
@@ -47,15 +49,17 @@ export class Story implements OnInit {
   );
 
   /** 0 = rounded card, 1 = full screen. */
-  readonly expansion = computed(() => {
-    const p = this.progress();
-    const grow = ease(clamp((p - INTRO_END) / (EXPAND_END - INTRO_END)));
-    const shrink = ease(clamp((p - COLLAPSE_START) / (1 - COLLAPSE_START)));
-    return grow * (1 - shrink);
-  });
+  readonly expansion = computed(() =>
+    ease(clamp((this.progress() - INTRO_END) / (EXPAND_END - INTRO_END))),
+  );
+
+  /** 0 = curtains open, 1 = closed. */
+  readonly curtain = computed(() =>
+    ease(clamp((this.progress() - CURTAIN_START) / (CURTAIN_END - CURTAIN_START))),
+  );
 
   private readonly chapterProgress = computed(() =>
-    clamp((this.progress() - EXPAND_END) / (COLLAPSE_START - EXPAND_END)),
+    clamp((this.progress() - EXPAND_END) / (CURTAIN_START - EXPAND_END)),
   );
 
   readonly active = computed(() =>
@@ -107,7 +111,7 @@ export class Story implements OnInit {
     const target =
       i >= this.chapters.length
         ? 1
-        : EXPAND_END + (COLLAPSE_START - EXPAND_END) * ((Math.max(0, i) + 0.5) / this.chapters.length);
+        : EXPAND_END + (CURTAIN_START - EXPAND_END) * ((Math.max(0, i) + 0.5) / this.chapters.length);
     window.scrollTo({ top: window.scrollY + rect.top + target * distance, behavior: 'smooth' });
   }
 
@@ -141,6 +145,15 @@ export class Story implements OnInit {
     };
   }
 
+  curtainStyle(side: 'left' | 'right'): Record<string, string> {
+    const c = this.curtain();
+    const dir = side === 'left' ? -1 : 1;
+    return {
+      transform: `translateX(${dir * (1 - c) * 101}%)`,
+      visibility: c <= 0.001 ? 'hidden' : 'visible',
+    };
+  }
+
   layerStyle(i: number): Record<string, string> {
     const l = this.local(i);
     const fadeIn = i === 0 ? 1 : clamp(l / 0.3);
@@ -171,6 +184,7 @@ export class Story implements OnInit {
 
   /** Navigation overlay fades in once the card is nearly full screen. */
   navStyle(): Record<string, string> {
-    return { opacity: String(clamp((this.expansion() - 0.75) / 0.25)) };
+    const open = 1 - clamp(this.curtain() * 2.5);
+    return { opacity: String(clamp((this.expansion() - 0.75) / 0.25) * open) };
   }
 }

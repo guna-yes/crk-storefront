@@ -26,6 +26,11 @@
       }
     </div>
 
+    <div class="curtains" aria-hidden="true">
+      <div class="panel left" [style]="curtainStyle('left')"></div>
+      <div class="panel right" [style]="curtainStyle('right')"></div>
+    </div>
+
     <div class="nav" [style]="navStyle()">
       <div class="counter" aria-live="polite">
         <span class="num">{{ '0' + (active() + 1) }}</span>
