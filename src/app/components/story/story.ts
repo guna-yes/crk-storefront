@@ -17,8 +17,8 @@ const CHAPTERS: Chapter[] = [
 ];
 
 /** Scroll progress (0..1) at which each phase of the story starts/ends. */
-const INTRO_END = 0.12; // intro text gone, card is in
-const EXPAND_END = 0.24; // card has grown to full screen
+const INTRO_END = 0.04; // card holds still, then starts to grow
+const EXPAND_END = 0.16; // card has grown to full screen
 const CURTAIN_START = 0.86; // curtains begin to close
 const CURTAIN_END = 0.97; // curtains fully closed
 
@@ -117,18 +117,9 @@ export class Story implements OnInit {
 
   // ---- styles -----------------------------------------------------------
 
-  introStyle(): Record<string, string> {
-    const p = clamp(this.progress() / (INTRO_END * 0.8));
-    return {
-      opacity: String(1 - p),
-      transform: `translateY(${-p * 40}px) scale(${1 - p * 0.06})`,
-    };
-  }
-
   frameStyle(): Record<string, string> {
     const { w: vw, h: vh } = this.viewport();
     const mobile = vw <= 720;
-    const rise = ease(clamp((this.progress() - 0.03) / (INTRO_END - 0.03)));
     const e = this.expansion();
     const w0 = Math.min(vw * 0.92, 1100);
     const h0 = mobile ? vh * 0.62 : Math.min(vh * 0.72, 640);
@@ -139,8 +130,6 @@ export class Story implements OnInit {
       height: `${h0 + (vh - h0) * e}px`,
       'margin-top': `${mt0 * (1 - e)}px`,
       'border-radius': `${r0 * (1 - e)}px`,
-      opacity: String(rise),
-      transform: `translateY(${(1 - rise) * 60}px)`,
       'box-shadow': e > 0.9 ? 'none' : '',
     };
   }
