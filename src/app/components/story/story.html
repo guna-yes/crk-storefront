@@ -1,11 +1,19 @@
 <section id="what-we-do" class="story" #track>
   <div class="stage">
     <div class="intro" [style]="introStyle()">
-      <img class="hero-logo" src="logo.png" alt="CRK Homes - Furniture | Interiors" width="132" height="132" />
+      <div class="logo-wrap">
+        <svg class="ring" viewBox="0 0 108 108" aria-hidden="true"><circle cx="54" cy="54" r="50" /></svg>
+        <div class="logo">
+          <img src="logo.png" alt="CRK Homes - Furniture | Interiors" width="132" height="132" />
+        </div>
+      </div>
       <p class="eyebrow">Furniture &nbsp;|&nbsp; Interiors</p>
-      <h1>Furniture,<br />made by hand.</h1>
+      <h1>
+        <span class="w" style="--d: 1.35s">Furniture,</span><br />
+        <span class="w" style="--d: 1.6s">made</span>&ngsp;<span class="w" style="--d: 1.75s">by</span>&ngsp;<span class="w" style="--d: 1.9s">hand.</span>
+      </h1>
       <p class="sub">Sofas, dining tables, beds and made-to-order pieces, built in solid wood by local craftsmen.</p>
-      <span class="hint">Scroll</span>
+      <span class="hint">Scroll<i class="chev"></i></span>
     </div>
 
     <div class="frame" [style]="frameStyle()">
