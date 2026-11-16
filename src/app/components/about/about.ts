@@ -26,12 +26,12 @@ export class About {
       .slice(0, 3)
       .map((i) => ({
         src: resolveImageUrl(i.imageUrl) ?? '',
-        alt: i.title || 'CRK Furnitures workshop',
+        alt: i.title || 'CRK Homes workshop',
       }));
     return own.length ? own : FALLBACK_PHOTOS;
   });
 
-  readonly whatsappUrl = whatsappLink('Hi! I would like to know more about CRK Furnitures.');
+  readonly whatsappUrl = whatsappLink('Hi! I would like to know more about CRK Homes.');
   readonly points = [
     { title: 'Solid wood', text: 'Teak, sheesham and mango wood - real timber, not particle board.' },
     { title: 'Made to order', text: 'Tell us the size, wood and finish. We build it for your home.' },
