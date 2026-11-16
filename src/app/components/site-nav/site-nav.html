@@ -1,6 +1,9 @@
 <nav class="site-nav">
   <div class="nav-inner">
-    <a href="#what-we-do" class="brand">CRK</a>
+    <a href="#what-we-do" class="brand" aria-label="CRK Homes - home">
+      <img src="favicon-192.png" alt="" width="40" height="40" />
+      <span>CRK Homes</span>
+    </a>
     <div class="nav-links">
       <a href="#what-we-do">Who We Are</a>
       <a href="#our-work">Our Work</a>
@@ -20,6 +23,7 @@
 
 @if (menuOpen()) {
   <div class="mobile-menu" role="dialog" aria-modal="true" (keydown.escape)="closeMenu()">
+    <img class="menu-logo" src="favicon-192.png" alt="CRK Homes" width="88" height="88" />
     <button type="button" class="menu-close" (click)="closeMenu()" aria-label="Close menu">
       <app-icon name="close" [size]="22" />
     </button>

@@ -17,11 +17,30 @@
 }
 
 .brand {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: 0.02em;
-  color: var(--accent);
+  color: var(--text);
   text-decoration: none;
+}
+
+.brand img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 1px 6px rgba(60, 40, 10, 0.25);
+}
+
+.menu-logo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 22px rgba(60, 40, 10, 0.25);
 }
 
 .nav-links {
