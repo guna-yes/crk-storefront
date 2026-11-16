@@ -7,10 +7,32 @@
   position: sticky;
   top: 0;
   height: 100svh;
-  overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+}
+
+.story-head {
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  width: min(92vw, 1100px);
+  transform: translateX(-50%);
+  text-align: left;
+  pointer-events: none;
+}
+
+.story-head h2 {
+  margin: 0 0 4px;
+  font-size: clamp(26px, 4.4vw, 40px);
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.story-head p {
+  margin: 0;
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: var(--text-muted);
 }
 
 .frame {

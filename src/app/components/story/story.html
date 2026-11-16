@@ -1,5 +1,10 @@
 <section id="what-we-do" class="story" #track>
   <div class="stage">
+    <div class="story-head" [style]="headStyle()">
+      <h2>What we do</h2>
+      <p>Sofas, dining tables, beds, made-to-order pieces and curtains.</p>
+    </div>
+
     <div class="frame" [style]="frameStyle()">
       @for (chapter of chapters; track chapter.title; let i = $index) {
         <div class="layer" [style]="layerStyle(i)">

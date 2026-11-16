@@ -117,13 +117,21 @@ export class Story implements OnInit {
 
   // ---- styles -----------------------------------------------------------
 
+  headStyle(): Record<string, string> {
+    const e = this.expansion();
+    return {
+      opacity: String(1 - clamp(e * 1.8)),
+      transform: `translateX(-50%) translateY(${-e * 24}px)`,
+    };
+  }
+
   frameStyle(): Record<string, string> {
     const { w: vw, h: vh } = this.viewport();
     const mobile = vw <= 720;
     const e = this.expansion();
     const w0 = Math.min(vw * 0.92, 1100);
-    const h0 = mobile ? vh * 0.62 : Math.min(vh * 0.72, 640);
-    const mt0 = vh * (mobile ? 0.1 : 0.08);
+    const mt0 = 164;
+    const h0 = Math.min(vh * 0.72, vh - mt0 - 28, mobile ? 620 : 640);
     const r0 = Math.min(36, Math.max(20, vw * 0.04));
     return {
       width: `${w0 + (vw - w0) * e}px`,
