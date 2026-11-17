@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { GalleryStore } from '../../services/gallery-store.service';
 import { resolveImageUrl } from '../../services/api.service';
 import { Reveal } from '../../directives/reveal.directive';
-import { whatsappLink } from '../../shared/contact.constants';
 
 const FALLBACK_PHOTOS = [
   { src: 'about/workshop.jpg', alt: 'A craftsman planing wood in the workshop' },
@@ -31,8 +30,6 @@ export class About {
     return own.length ? own : FALLBACK_PHOTOS;
   });
 
-  readonly ownerWhatsappUrl = whatsappLink('Hi Suhail! I would like to know more about CRK Homes.');
-  readonly whatsappUrl = whatsappLink('Hi! I would like to know more about CRK Homes.');
   readonly points = [
     { title: 'Solid wood', text: 'Teak, sheesham and mango wood - real timber, not particle board.' },
     { title: 'Made to order', text: 'Tell us the size, wood and finish. We build it for your home.' },
