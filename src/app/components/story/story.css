@@ -13,12 +13,10 @@
 }
 
 .story-head {
-  position: absolute;
-  top: 84px;
-  left: 50%;
+  position: relative;
+  z-index: 3;
   width: min(92vw, 1100px);
-  transform: translateX(-50%);
-  text-align: left;
+  margin: 0 auto -66px;
   pointer-events: none;
 }
 
