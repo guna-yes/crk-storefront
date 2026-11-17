@@ -2,9 +2,30 @@
   <div class="about-inner">
     <h2 appReveal>Who we are</h2>
     <p class="lead" appReveal>
-      CRK Homes is a local furniture workshop. We build sofas, dining tables, beds and
+      CRK Homes is located in Anantapur. We build sofas, dining tables, beds and
       wardrobes in solid wood, and make custom pieces to your exact requirement.
     </p>
+    <div class="owner" appReveal>
+      <img class="owner-photo" src="about/suhail.jpg" alt="Suhail, Founder and Owner of CRK Homes" loading="lazy" />
+      <div class="owner-body">
+        <p class="owner-eyebrow">Meet the owner</p>
+        <h3>Suhail</h3>
+        <p class="owner-role">Founder &amp; Owner, CRK Homes</p>
+        <p class="owner-text">
+          Suhail has built a great reputation in the furniture industry. With more than 5 years
+          of experience, he personally oversees every order, from the first measurement to the
+          final finish, so each piece is built the way the customer imagined it.
+        </p>
+        <div class="owner-badges">
+          <span>5+ years in the industry</span>
+          <span>Based in Anantapur</span>
+        </div>
+        <a class="btn btn-primary" [href]="ownerWhatsappUrl" target="_blank" rel="noopener">
+          Talk to Suhail on WhatsApp
+        </a>
+      </div>
+    </div>
+
     <div class="photos" appReveal>
       @for (photo of photos(); track photo.src; let i = $index) {
         <img [class.big]="i === 0" [src]="photo.src" [alt]="photo.alt" loading="lazy" />

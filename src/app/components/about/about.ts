@@ -31,6 +31,7 @@ export class About {
     return own.length ? own : FALLBACK_PHOTOS;
   });
 
+  readonly ownerWhatsappUrl = whatsappLink('Hi Suhail! I would like to know more about CRK Homes.');
   readonly whatsappUrl = whatsappLink('Hi! I would like to know more about CRK Homes.');
   readonly points = [
     { title: 'Solid wood', text: 'Teak, sheesham and mango wood - real timber, not particle board.' },
