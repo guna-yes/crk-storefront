@@ -5,70 +5,43 @@
   </div>
 
   <div class="stage">
-    <div class="frame" [style]="frameStyle()">
+    <div class="cards">
       @for (chapter of chapters; track chapter.title; let i = $index) {
-        <div class="layer" [style]="layerStyle(i)">
-          <div class="media">
-            @if (photos()[i]; as src) {
-              <img [src]="src" [alt]="chapter.title" />
-            } @else {
-              <div class="placeholder"></div>
-            }
-          </div>
+        <div class="card" [style]="cardStyle(i)">
+          @if (photos()[i]; as src) {
+            <img [src]="src" [alt]="chapter.title" />
+          } @else {
+            <div class="placeholder"></div>
+          }
           <div class="shade"></div>
-          <div class="copy" [style]="textStyle(i)">
-            <h2>{{ chapter.title }}</h2>
+          <div class="tag">
+            <b>0{{ i + 1 }} <small>/ 0{{ chapters.length }}</small></b>
+            <span>{{ chapter.title }}</span>
+          </div>
+          <div class="copy">
+            <h3>{{ chapter.title }}</h3>
             <p>{{ chapter.line }}</p>
           </div>
+          <div class="dim"></div>
         </div>
+      }
+    </div>
+
+    <div class="dots" role="tablist" aria-label="Chapters">
+      @for (chapter of chapters; track chapter.title; let i = $index) {
+        <button
+          type="button"
+          class="dot"
+          [class.on]="active() === i"
+          (click)="goTo(i)"
+          [attr.aria-label]="'Show ' + chapter.title"
+        ></button>
       }
     </div>
 
     <div class="curtains" aria-hidden="true">
       <div class="panel left" [style]="curtainStyle('left')"></div>
       <div class="panel right" [style]="curtainStyle('right')"></div>
-    </div>
-
-    <div class="nav" [style]="navStyle()">
-      <div class="counter" aria-live="polite">
-        <span class="num">{{ '0' + (active() + 1) }}</span>
-        <span class="of">/ 0{{ chapters.length }}</span>
-        <span class="name">{{ chapters[active()].title }}</span>
-      </div>
-
-      <div class="dots" role="tablist" aria-label="Story chapters">
-        @for (chapter of chapters; track chapter.title; let i = $index) {
-          <button
-            type="button"
-            class="dot"
-            [class.on]="active() === i"
-            (click)="goTo(i)"
-            [attr.aria-label]="'Go to ' + chapter.title"
-          ></button>
-        }
-      </div>
-
-      <div class="arrows">
-        <button type="button" (click)="goTo(active() - 1)" [disabled]="active() === 0" aria-label="Previous">
-          <app-icon name="chevron-down" [size]="20" class="flip" />
-        </button>
-        <button type="button" (click)="goTo(active() + 1)" aria-label="Next">
-          <app-icon name="chevron-down" [size]="20" />
-        </button>
-      </div>
-
-      <button type="button" class="next" (click)="goTo(active() + 1)">
-        @if (nextPhoto(); as thumb) {
-          <img [src]="thumb" alt="" />
-        }
-        <span class="next-text">
-          <small>Next</small>
-          <strong>{{ nextLabel() }}</strong>
-        </span>
-        <app-icon name="chevron-down" [size]="18" />
-      </button>
-
-      <div class="bar"><span [style.width.%]="progress() * 100"></span></div>
     </div>
   </div>
 </section>
